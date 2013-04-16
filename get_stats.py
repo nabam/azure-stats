@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from azure.storage import *
 
 default_config_path = "azure.json"
+retries = 4
 
 def parse_config(config_path):
   config_file = open(config_path)
@@ -16,10 +17,7 @@ def parse_config(config_path):
   return config
 
 def get_capacity(table_service, time):
-  i = 0
-  while(i < 4):
-    i = i + 1
-
+  for i in range(1, retries):
     day = time.strftime("%Y%m%dT0000")
     stats = table_service.query_entities(table_name='$MetricsCapacityBlob', filter="RowKey eq 'data' and PartitionKey eq '"+day+"'", top=1)
 
@@ -35,10 +33,7 @@ def get_metrics(table_service, time, transactions, items, service_type='blob'):
   elif service_type == 'table':
     table = '$MetricsTransactionsTable'
 
-  i = 0
-  while(i < 4):
-    i = i + 1
-
+  for i in range(1, retries):
     hour = time.strftime("%Y%m%dT%H00")
     stats = table_service.query_entities(table_name=table, filter="PartitionKey eq '"+hour+"'")
 
