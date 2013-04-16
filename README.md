@@ -15,11 +15,9 @@ optional arguments:
   -c CONFIG, --config CONFIG
                         config path
   -C, --capacity        show capacity
-  -T BLOB_TRANSACTIONS [BLOB_TRANSACTIONS ...], --blob_transactions
-   BLOB_TRANSACTIONS [BLOB_TRANSACTIONS ...]
+  -T BLOB_TRANSACTIONS [BLOB_TRANSACTIONS ...], --blob_transactions BLOB_TRANSACTIONS [BLOB_TRANSACTIONS ...]
                         blob transactions
-  -t TABLE_TRANSACTIONS [TABLE_TRANSACTIONS ...], --table_transactions
-   TABLE_TRANSACTIONS [TABLE_TRANSACTIONS ...]
+  -t TABLE_TRANSACTIONS [TABLE_TRANSACTIONS ...], --table_transactions TABLE_TRANSACTIONS [TABLE_TRANSACTIONS ...]
                         table transactions
   -i ITEMS [ITEMS ...], --items ITEMS [ITEMS ...]
                         items</pre>
