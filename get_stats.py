@@ -17,7 +17,7 @@ def parse_config(config_path):
     return config
 
 def get_capacity(table_service, time):
-    for i in range(1, retries):
+    for i in xrange(1, retries):
         day = time.strftime("%Y%m%dT0000")
         stats = table_service.query_entities(table_name='$MetricsCapacityBlob', filter="RowKey eq 'data' and PartitionKey eq '"+day+"'", top=1)
 
@@ -33,7 +33,7 @@ def get_metrics(table_service, time, transactions, items, service_type='blob'):
     elif service_type == 'table':
         table = '$MetricsTransactionsTable'
 
-    for i in range(1, retries):
+    for i in xrange(1, retries):
         hour = time.strftime("%Y%m%dT%H00")
         stats = table_service.query_entities(table_name=table, filter="PartitionKey eq '"+hour+"'")
 
@@ -48,12 +48,16 @@ def get_metrics(table_service, time, transactions, items, service_type='blob'):
             time = time - timedelta(hours=1)
 
 def run():
+    usefull = False
+
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config", help="config path")
     parser.add_argument("-C", "--capacity", help="show capacity", action='store_true')
     parser.add_argument("-T", "--blob_transactions", nargs="+", help="blob transactions")
     parser.add_argument("-t", "--table_transactions", nargs="+", help="table transactions")
     parser.add_argument("-i", "--items", nargs="+", help="items")
+
+    parser.set_defaults(add_help=True)
 
     args = parser.parse_args()
 
@@ -71,18 +75,24 @@ def run():
     if args.capacity:
         print("Capacity:")
         get_capacity(table_service, time)
+        usefull = True
 
     if args.blob_transactions and args.items:
         print("Blobs:")
         transactions = args.blob_transactions
         items = args.items
         get_metrics(table_service, time, transactions, items, "blob")
+        usefull = True
 
     if args.table_transactions and args.items:
         print("Tables:")
         transactions = args.table_transactions
         items = args.items
         get_metrics(table_service, time, transactions, items, "table")
+        usefull = True
+
+    if usefull == False:
+        parser.print_help()
 
 if __name__ == '__main__':
     run()
