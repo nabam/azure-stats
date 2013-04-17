@@ -58,7 +58,6 @@ def run():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config", help="config path")
-    parser.add_argument("-z", "--zabbix", help="send stats to zabbix", action='store_true')
     parser.add_argument("-C", "--capacity", help="show capacity", action='store_true')
     parser.add_argument("-T", "--blob_transactions", nargs="+", help="blob transactions")
     parser.add_argument("-t", "--table_transactions", nargs="+", help="table transactions")
