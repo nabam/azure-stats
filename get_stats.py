@@ -47,7 +47,7 @@ def get_metrics(table_service, time, transactions, items, service_type='blob'):
                 for transaction in transactions:
                     for item in items:
                         if "user;"+transaction == stat.RowKey:
-			    result.append({"item": transaction+"."+item, "value":getattr(stat,item), "time":stats[0].PartitionKey})
+                            result.append({"item": transaction+"."+item, "value":getattr(stat,item), "time":stats[0].PartitionKey})
             break
         else:
             time = time - timedelta(hours=1)
@@ -83,17 +83,17 @@ def run():
         usefull = True
         capacity = get_capacity(table_service, time)
         print("Capacity:")
-      	for metric in capacity:
-	    print "Time: %s, Item: %s, Value: %s" % (metric["time"], metric["item"], metric["value"])
+        for metric in capacity:
+            print "Time: %s, Item: %s, Value: %s" % (metric["time"], metric["item"], metric["value"])
 
     if args.blob_transactions and args.items:
-	usefull = True
+        usefull = True
         transactions = args.blob_transactions
         items = args.items
         blob_metrics = get_metrics(table_service, time, transactions, items, "blob")
         print("Blobs:")
-	for metric in blob_metrics:
-	    print "Time: %s, Item: %s, Value: %s" % (metric["time"], metric["item"], metric["value"])
+        for metric in blob_metrics:
+            print "Time: %s, Item: %s, Value: %s" % (metric["time"], metric["item"], metric["value"])
 
     if args.table_transactions and args.items:
         usefull = True
@@ -101,8 +101,8 @@ def run():
         items = args.items
         table_metrics = get_metrics(table_service, time, transactions, items, "table")
         print("Tables:")
-	for metric in table_metrics:
-	    print "Time: %s, Item: %s, Value: %s" % (metric["time"], metric["item"], metric["value"])
+        for metric in table_metrics:
+            print "Time: %s, Item: %s, Value: %s" % (metric["time"], metric["item"], metric["value"])
 
     if usefull == False:
         parser.print_help()
