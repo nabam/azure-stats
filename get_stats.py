@@ -23,9 +23,9 @@ def get_capacity(table_service, time):
         stats = table_service.query_entities(table_name='$MetricsCapacityBlob', filter="RowKey eq 'data' and PartitionKey eq '"+day+"'", top=1)
 
         if stats != []:
-            result.append({"item": "capacity", "value": stats[0].Capacity, "time": stats[0].PartitionKey})
-            result.append({"item": "objects", "value": stats[0].ObjectCount, "time": stats[0].PartitionKey})
-            result.append({"item": "containers", "value": stats[0].ContainerCount, "time": stats[0].PartitionKey})
+            result.append({"item": "Capacity", "value": stats[0].Capacity, "time": stats[0].PartitionKey})
+            result.append({"item": "ObjectCount", "value": stats[0].ObjectCount, "time": stats[0].PartitionKey})
+            result.append({"item": "ContainerCount", "value": stats[0].ContainerCount, "time": stats[0].PartitionKey})
             break
         else:
             time = time - timedelta(hours=1)
@@ -58,6 +58,7 @@ def run():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config", help="config path")
+    parser.add_argument("-z", "--zabbix", help="send stats to zabbix", action='store_true')
     parser.add_argument("-C", "--capacity", help="show capacity", action='store_true')
     parser.add_argument("-T", "--blob_transactions", nargs="+", help="blob transactions")
     parser.add_argument("-t", "--table_transactions", nargs="+", help="table transactions")
@@ -82,7 +83,8 @@ def run():
         usefull = True
         capacity = get_capacity(table_service, time)
         print("Capacity:")
-        print "Time: %s, capacity: %sGB, objects: %s, containers: %s" % (capacity[0]["time"], capacity[0]["value"]/1024/1024/1024, capacity[1]["value"], capacity[2]["value"])
+      	for metric in capacity:
+	    print "Time: %s, Item: %s, Value: %s" % (metric["time"], metric["item"], metric["value"])
 
     if args.blob_transactions and args.items:
 	usefull = True
